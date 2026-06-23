@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>테마변경</title>
+</head>
+<body>
+
+<!-- 여기는 강사님 정답 -->
+    <button onclick="toggleThema()">테마 변경</button>
+    <p>현재 테마: <span id="themaText">white</span></p>
+    <script>
+        const body = document.body
+
+        function applyThema(thema){
+            // thema가 dark와 같다면 #222, 아니라면 #fff
+            body.style.backgroundColor = thema === "dark" ? "#222" : "#fff"
+            body.style.color = thema === "dark" ? "#fff" : "#222"
+
+            document.getElementById("themaText").innerHTML = thema
+        }
+
+        function toggleThema(){
+            // localStorage에서 thema를 가져와서 true면 current에 색상넣고, 없으면 false가 되어 white를 넣음
+            const current = localStorage.getItem("thema") || "white"
+            const next = current === "white" ? "dark" : "white"
+            localStorage.setItem("thema", next)
+            applyThema(next)
+        }
+
+        applyThema(localStorage.getItem("thema") || "white")
+    </script>
+
+
+<!-- 여기서부턴 내가
+
+    <button onclick="changeTheme()">테마변경</button>
+    <p>현재 테마: <span id="themeText">white</span></p>
+
+    <script>
+        function changeTheme(){
+            const theme = localStorage.getItem("theme")
+
+            if(theme === "Dark"){
+                // 다크일때 화이트로 바꿈
+                document.body.style.backgroundColor = "white"
+                document.body.style.color = "black"
+                document.getElementById("themeText").innerText = "white"
+                localStorage.setItem("theme", "white")
+            }else{
+                // 화이트일때 다크로 바꿈
+                document.body.style.backgroundColor = "black"
+                document.body.style.color = "white"
+                document.getElementById("themeText").innerText = "Dark"
+                localStorage.setItem("theme", "Dark")
+            }
+        }
+
+        // 새로고침했을 때
+        const theme = localStorage.getItem("theme")
+        if(theme === "Dark"){
+        }
+</script>
+ -->
+</body>
+</html>

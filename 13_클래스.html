@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>클래스</title>
+    <script>
+        /*
+            [클래스]
+            class 클래스명{
+                constructor(매개변수1, 매개변수2, ...){
+                    속성 정의
+                }
+                메서드명(매개변수1, 매개변수2, ...){
+                    객체가 할 수 있는 동작 정의
+                }
+            }
+
+            [클래스 상속]
+            - 다른 클래스의 속성과 메서드를 물려받을 수 있음
+            class 클래스명 extends 부모클래스명{
+            }
+
+            [정적 메서드]
+            - 클래스 이름으로 직접 호출하는 메서드
+
+            [클래스 필드]
+            - constructor없이 속성 바로 정의 가능
+            - 클래스 레벨 속성, 비공개 속성 정의에 유리
+
+            [get/set]
+            - get과 set은 같은 이름을 공유해야 함
+            - 내부에서 값을 저장할땐 보통 _name처럼 언더스코어를 붙여 구분
+            - get만 정의 : 읽기 전용 속성
+
+            [private 필드]
+            - 클래스 내부에서만 접근 가능한 비공개
+
+
+            
+        */
+    </script>
+</head>
+<body>
+    <h1>클래스</h1>
+    <script>
+        class Animal1{
+            // 생성자 : type을 받아 객체 생성
+            constructor(type){
+                this.type = type
+            }
+            // 메서드
+            bark() {
+                console.log("멍멍!")
+            }
+        } 
+        const dog1 = new Animal1("강아지")
+        console.log(dog1.type) // 강아지
+        dog1.bark() // 멍멍!
+
+        console.log("----------------------------------")
+        class Animal{
+            // 생성자 : type을 받아 객체 생성
+            constructor(type){
+                this.type = type
+            }
+            // 메서드
+            bark() {
+                console.log(`${this.type} 멍멍!`)
+            }
+            speak() {
+                console.log("동물이 소리를 냅니다")
+            }
+        } 
+        const dog = new Animal("강아지")
+        console.log(dog.type) // 강아지
+        dog.bark() // 강아지 멍멍!
+
+        console.log("----------------------------------")
+        class Dog extends Animal{
+            constructor(type, color){
+                // 부모에 이미 type이 있어
+                // 부모를 호출하고 type을 가져옴
+                super(type) // animal의 constructor 호출
+                this.color = color
+            }
+            speak(){
+                console.log("멍멍!")
+            }
+            showInfo(){
+                console.log(`${this.type}는 ${this.color}입니다.`)
+            }
+        }
+
+        const rucy = new Dog("강아지", "흰색") // this타입 추가
+        rucy.speak() // 멍멍! > 오버라이딩
+        rucy.bark() // 강아지 멍멍! > 부모 this타입 없으면 Undefined 멍멍!
+        rucy.showInfo() // 강아지는 흰색입니다.
+
+        console.log("----------------------------------")
+    </script>
+
+    <hr>
+
+    <h1>정적 메서드</h1>
+    <script>
+        class MathTool{
+            static add(a, b){
+                return a + b
+            }
+        }
+        console.log(MathTool.add(3, 4)) // 7
+    </script>
+
+    <hr>
+
+    <h1>클래스 필드</h1>
+    <script>
+        class Product{
+            name = "상품명 없음"
+            price = 0
+
+            showInfo() {
+                console.log(`${this.name}의 가격은 ${this.price}원 입니다.`)
+            }
+        }
+    </script>
+
+    <hr>
+    <h1>get / set</h1>
+    <script>
+        class User{
+            // private 필드 (password)
+            #password = "" // 이게 무조건 있어야 생성가능
+
+            // 값을 초기화시키기 위해 constructor안에 password추가
+            constructor(name, password){
+                this._name = name
+                this.#password = password
+            }
+            get name(){
+                return this._name
+            }
+            set name(newName){
+                // 방어코드
+                if(newName.length < 2){
+                    console.log("이름은 두 글자 이상이어야 합니다.")
+                }else{
+                    this._name = newName
+                }
+            }
+
+            checkPassword(input){
+                return this.#password === input
+            }
+        }
+        // 객체생성
+        const user =  new User("김사과", "1111")
+        console.log(user) // _name : 김사과
+        user.name = "반" // 이름은 두 글자 이상이여야 합니다.
+        user.name = "반하나" // 세팅됨, 따로 출력되는것 없음
+        console.log(user.name) // 게터작동 : 반하나
+        console.log(user.checkPassword("1111")) // ture
+        console.log(user.checkPassword("1234")) // false
+        // console.log(user.#password) // 접근불가
+
+        console.log("----------------------------------")
+    </script>
+
+    <hr>
+
+    <h1>Account 클래스</h1>
+    <script>
+        class Account{
+            // 정적변수
+            static accountCount = 0
+
+            #balance = 0
+
+            constructor(owner){
+                this.owner = owner
+                Account.accountCount++
+            }
+
+            get balance() {
+                return this.#balance
+            }
+            set balance(value) {
+                console.log("직접 잔액을 설정할 수 없습니다.")
+            }
+
+            deposit(amount){
+                if(amount > 0){
+                    this.#balance += amount
+                    console.log(`${this.owner}님, ${amount}원 입급되었습니다.`)
+                }
+            }
+
+            whithdraw(amount){
+                if (amount <= this.#balance){
+                    this.#balance -= amount
+                    console.log(`${this.owner}님, ${amount}원 출금되었습니다.`)
+                }else{
+                    console.log("잔액이 부족합니다.")
+                }
+            }
+
+            static getAcountCount(){
+                return `총 계좌 수: ${Account.accountCount}`
+            }
+        }
+
+        // 객체생성 1
+        const user1 = new Account("김사과")
+        user1.deposit(1000) // 김사과님, 1000원 입급되었습니다.
+        console.log(user1.balance) // 게터실행 : 1000
+
+        user1.balance = 5000 // 직접 잔액을 설정할 수 없습니다.
+        console.log(user1.balance) // 1000 : 그대로임
+
+        user1.whithdraw(300) // 김사과님, 300원 출금되었습니다.
+        
+        // 객체생성 2
+        const user2 = new Account("반하나")
+        user2.deposit(6000) // 반하나님, 6000원 입급되었습니다.
+
+        // 총 계좌 출력
+        console.log(Account.getAcountCount()) // 총 계좌 수: 2
+
+
+    </script>
+    
+</body>
+</html>

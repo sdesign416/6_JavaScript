@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배열</title>
+    <script>
+        /*
+            [배열]
+            - 여러개의 값을 하나의 변수에 순서대로 저장할 수 있는 자료구조
+            - index라는 번호로 구분되며, 대부분 0으로 시작
+            - 여러가지 자료형을 함께 저장할 수 있음
+            - 인덱스를 기준으로 값을 저장하고 접근함
+            - 길이는 자동으로 관리됨
+            - 자바스크립트의 배열은 연속적일 필요가 없음
+            - 배열도 사실은 객체(object)
+
+                let 변수명 = [값1, 값2, ...]
+
+                let mixed = [1, "Hello", true, {name:"김사과"}, function() {console.log('hi')}]
+
+                console.log(mixed[0])       // 1 출력
+                mixed[1] = "반하나"         // hello대신 반하나 집어넣음
+                console.log(mixed.length)  // 5
+
+                mixed[6] = 100 // 인덱스는 4번까지 있지만 error없이 저장됨
+                // → 5번 없이 6으로 들어감(5번은 undefined)
+                // → [1, "Hello", true, {name:"김사과"}, function() {console.log('hi')}, undefined, 100]
+                console.log(mixed.length) // 7으로 변경됨(인덱스는 6까지)
+
+
+            [배열 메서드]
+            1. push(): 배열의 끝에 요소를 추가
+            2. pop(): 배열의 마지막 요소를 제거
+            3. unshift(): 배열의 앞에 요소를 추가
+            4. shift(): 배열의 첫 번째 요소를 제거
+            5. forEach(): 배열의 각 요소를 순서대로 하나씩 처리 (반복문과 같은, 중요)
+            6. map(): 각 요소를 가공하여 새로운 배열을 반환(파이썬과 같음)
+            7. filter(): 조건을 만족하는 요소만 골라 새 배열 반환
+            8. reduce(): 배열을 하나의 값으로 누적 계산(합계, 객체 생성)
+            9. find(): 조건을 만족하는 첫 번째 요소 반환
+            10. findIndex(): 조건을 만족하는 첫 번째 요소의 인덱스 반환
+            11. includes(): 특정 값이 포함되어 있는지 여부 반환(true/false)
+            12. indexOf(): 특정 값의 첫 번째 인덱스 반환(없으면 -1)
+            13. sort(): 배열 요소를 정렬(원본 배열 변경)
+            14. reverse(): 배열 순서 반전
+            15. slice(): 배열의 일부를 잘라 새 배열 반환(원본 유지)
+            16. splice(): 요소 추가/삭제/교체(원본 배열 변갱)
+            17. join(): 배열을 문자열로 반환
+            18. concat(): 배열을 합쳐서 새 배열로 반환
+            19. flat(): 중첩 배열을 평단화
+        */
+    </script>
+</head>
+<body>
+    <script>
+        const user = [1, 'apple', '김사과', 20, '서울 서초구']
+
+        console.log(user)
+
+        console.log(user[0])
+        console.log(user[1])
+        console.log(user[2])
+        console.log(user[3])
+        console.log(user[4])
+
+        // -----------------------------------------------
+        console.log("[값 변경]")
+
+        user[4] = "서울 강남구"
+        console.log(user)
+        console.log(user.length) // 5
+
+        // -----------------------------------------------
+        console.log("[인덱스6번에 추가]")
+
+        user[6] = "여자"
+        console.log(user)
+        console.log(user.length) // 7
+        console.log(user[5]) // undefined
+
+        // -----------------------------------------------
+        console.log("[for문으로 돌기]")
+
+        for(let i=0; i<user.length; i++){
+            console.log(user[1])
+        }
+
+        // -----------------------------------------------
+        console.log("[push 메서드]")
+        user.push("ISTJ")
+        console.log(user)
+
+        console.log("[pop 메서드]")
+        let temp = user.pop()
+        console.log(user) // ISTJ 삭제
+        console.log(temp) // temp변수에 ISTJ들어감
+
+        console.log("[shift 메서드]")
+        temp = user.shift()
+        console.log(user)
+        console.log(temp)
+
+        console.log("[concat 메서드]")
+        const profile = ['A형', 'ISTJ']
+        let result = user.concat(profile)
+        console.log(result)
+
+        console.log("[join 메서드]")
+        result = user.join('😎')
+        console.log(result)
+        console.log(typeof result) // 문자열로 바뀐것 확인 string
+
+        const arr = ['apple', 'banan', 'orange', 'Apple', 'melon']
+        arr.sort() // 오름차순(자바스크립트는 내림차순이 없어 별도로 만들거나 오름차순을 reverse 해줘야함)
+        console.log(arr)
+        // reverse로 내림차순
+        arr.reverse()
+        console.log(arr)
+    </script>
+    
+</body>
+</html>

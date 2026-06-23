@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>객체 기초</title>
+    <script>
+        /*
+            [1. 절차 지향 프로그래밍]
+                - 코드를 순서대로 실행되는 절차로 구성하는 방식
+                const names = ['김사과', '반하나', '오렌지', '이메론']
+                for(let i=0; i<names.lenhtj; i++){
+                    if(names[i].startsWith("김")){
+                        console.log("안녕하세요, " + names[i] + "님!")
+                    }
+                }
+
+            [2. 객체 지향 프로그래밍]
+                - 프로그램을 구성할 때 현실 세계의 사물들을 객체로 모델링하여, 객체간의 상호장용을 통해 문제를 해결하는 방식
+                const greeter = {
+                    names: ['김사과', '반하나', '오렌지', '이메론']
+                    greetKim: function() {
+                        for(let i=0; i<names.lenhtj; i++){
+                            if(names[i].startsWith("김")){
+                                console.log("안녕하세요, " + names[i] + "님!")
+                            }
+                        }
+                    }
+                }
+
+            [3. 함수형 프로그래밍]
+                - 함수 자체를 중심에 두는 프로그래밍 패러다임
+                - 데이터를 변경하지 않고, 순수 함수를 조합하여 문제를 해결
+                const names = ['김사과', '반하나', '오렌지', '이메론']
+                namse
+                    .filter(name => name.startsWith("김"))
+                    .forEach(name => console.log("안녕하세요, " + names[i] + "님!"))
+
+            [4. 객체]
+                - 하나의 값에 여러 데이터를 담을 수 있는 자료형
+                - 속성(프로퍼티), 동작을 함께 표현할 수 있는 구조
+                - 키-값 쌍의 형태로 데이터를 저장
+
+                1) 객체 리터럴
+                    - 중괄호{} 안에 직접 속성과 메서드를 정의
+
+                2) new Object() 생성자 사용
+                    - 객체를 빈 상태로 만들고, 나중에 속성 추가
+
+                >> 1,2번의 치명적인 단점
+                    - 똑같은 형태를 또 만드려면 코드를 다 복사해야함 
+
+                3) 생성자 함수 사용
+                    - 객체를 여러개 찍어낼 수 있는 템플릿 역할
+                    - new 키워드와 함께 사용
+
+                4) 클래스(class, ES6)
+                    - 구조가 명확하고 객체지향 언어와 유사
+                
+            [5. 객체 복사]
+                const obj1 = {name:"김사과"}
+                const obj2 = obj1
+                obj2,name = "반하나"
+                console.log(obj1,name) // 반하나 출력
+
+                1) 얕은 복사
+                - 객체의 1단계 속성만 복사
+                - 속성 값이 또 다른 객체나 배열이면 참조만 복사
+
+                2) 깊은 복사
+                - 객체 내부의 모든 중첩된 값들까지 복사
+                - 완전히 새로운 객체를 만드는 것
+
+            [6. 스프레드 문법]
+                - 점 3개를 사용해서 배열이나 객체의 값을 펼쳐 복사하거나 전달하는 문법
+                - 배열이나 객체 안의 요소들을 하나하나 꺼내서 다른 배열, 객체, 함수 등으로 옮겨줄 수 있음
+                
+                const fruits = ['사과', '바나나']
+                const newFruits = [...fruits, '포도']
+                console.log(newFruits) // ['사과', '바나나', '포도']
+
+                const arr1 = [1, 2, 3]
+                const arr2 = [...arr] // 새 배열 생성 [1, 2, 3]
+
+                const a = [1, 2]
+                const b = [3, 4]
+                const result = [...a, ...b] // [1, 2, 3, 4]
+        */
+    </script>
+</head>
+
+<body>
+    <h1>객체 리터럴</h1>
+    <script>
+        const person1 = {
+            name: "김사과", 
+            age: 20,
+            greet: function() {
+                // 본인 객체안의 name값을 가져와서 사용 (this)
+                console.log("안녕하세요, 저는 " + this.name + "입니다.") 
+            }
+        }
+        person1.greet() // 안녕하세요, 저는 김사과입니다.
+    </script>
+
+    <hr>
+
+    <h1>new Object() 생성자 사용</h1>
+    <p>많이 사용되는 방법은 아님</p>
+    <script>
+        const person2 = new Object() // 빈 객체가 heap메모리에 올라감
+        person2.name = "김사과"
+        person2.age = 20
+        person2.greet = function() {
+                console.log("안녕하세요, 저는 " + this.name + "입니다.") 
+            }
+        person2.greet()
+    </script>
+
+    <hr>
+
+    <h1>생성자 함수</h1>
+    <p>위 두가지 단점 보완</p>
+    <script>
+        // 생성자 함수 생성
+        function Person(name, age){
+            this.name = name
+            this.age = age
+            this.greet = function(){
+                console.log("안녕하세요, 저는 " + this.name + "입니다.") 
+            }
+        }
+
+        // 사용
+        const person3 = new Person("김사과", 20)
+        person3.greet()
+    </script>
+
+    <hr>
+
+    <h1>클래스</h1>
+    <script>
+        class Person2{
+            // 생성자가 있음 constructor
+            constructor(name, age){
+                this.name = name
+                this.age = age
+            }
+
+            greet(){
+                console.log("안녕하세요, 저는 " + this.name + "입니다.")
+            }
+        }
+
+        // 사용
+        const person4 = new Person("김사과", 20)
+        person4.greet()
+    </script>
+
+    <hr>
+
+    <h1>객체 복사 - 얕은 복사</h1>
+    <script>
+        const obj1 = {name:"김사과", age:20}
+        // 복사1) assign: 복사하는 메소드(obj1을 복사)
+        const obj2 = Object.assign({}, obj1)
+        obj2.name = "오렌지"
+        console.log(obj2) // 오렌지
+        console.log(obj1) // 김사과
+
+        // 복사2) 스프레드문법: 복사하는것임(obj1을 복사)
+        const obj3 = {...obj1}
+        obj3.age = 30
+        console.log(obj3) // 30
+        console.log(obj1) // 20
+
+        // 얕은 복사 : 1단계 속성만 복사! 속성안에 객체가 또 있다면 구조자체만 복사(1단계 하위애들은 주소가 복사되는것이기 때문에 값이 공통으로 변경됨)
+        // address는 객체이기 때문에, obj4와 obj5가 같은 주소 공유
+        const obj4 = {name:"김사과", address:{city:"서울"}}
+        const obj5 = {...obj4}
+        obj5.address.city = "부산"
+        console.log(obj5) // 부산
+        console.log(obj4) // 부산
+    </script>
+
+    <hr>
+
+    <h1>스프레드 문법(얕은 복사가 됨)</h1>
+    <script>
+        function add(x, y, z){
+            return x + y + z
+        }
+        const nums = [1, 2, 3]
+        console.log(add(...nums)) // 6
+
+        console.log("-----------------------------")
+        const a = {name:"김사과"}
+        const b = {age:20}
+        const merged = {...a, ...b}
+        console.log(merged) // 객체 병합된것 확인(김사과, 20)
+
+        console.log("-----------------------------")
+        const numsbers = [1, 2, 3, 4, 5]
+        const [first, second, ...rest] = numsbers
+        console.log(first)  // 1
+        console.log(second) // 2
+        console.log(rest)   // [3, 4, 5]
+
+        console.log("-----------------------------")
+        const user = {
+            name:"김사과",
+            age:20,
+            city:"서울"
+        }
+        const {name, ...rest2} = user
+        console.log(name)   // 김사과
+        console.log(rest2)  // 20, 서울
+
+        console.log("-----------------------------")
+        function display({name, age, address, job}){
+            console.log(name, age, address, job)
+        }
+        const apple = {name:"김사과", age:20, address:{si:"서울시", gu:"서초구", dong:"양재동"}}
+        console.log(apple) // 김사과, 20, address
+        const new_apple = {...apple, job:"프로그래머"}
+        console.log(new_apple) // 프로그래머 추가
+        display(new_apple) // 모두 전달됨, 객체로 받은것을 각각 변수로 출력
+
+        console.log("-----------------------------")
+        // new_apple에 pet속성 없으면 pet='루시'를 기본값으로 사용
+        const {pet='루시'} = new_apple
+        // new_apple.job 속성 값을 변수 hobby에 저장
+        // 원래 이름은 job, 내가 사용하고 싶은 이름은 hobby
+        const {job:hobby} = new_apple
+        console.log(new_apple) // 위에서 원본 객체를 건든건 아니라 hobby로 나오진 않음
+        console.log(hobby) // hobby로 출력해보면 값 저장된것 확인 가능
+
+        console.log("-----------------------------")
+        const component = {
+            name:"Button",
+            styles:{
+                size:20,
+                color:'black'
+            }
+        }
+        // component에서 styles안의 color만 꺼내는 함수
+        function changecolor({styles: {color}}){
+            console.log(color)
+        }
+        changecolor(component) // black
+    </script>
+    
+</body>
+</html>

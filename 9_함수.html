@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>함수</title>
+    <script>
+        /*
+            [함수]
+            function 함수명(매개변수1, 매개변수2, ...) {
+                실행할 코드
+                return 반환값
+            }
+            → return 생략 : 함수는 자동으로 undefined 반환(파이썬에선 None)
+            
+            [함수의 작성 방식]
+            1. 함수 선언식
+                - 가장 기본적인 함수 방식
+                - 코드 어디에서든 호출할 수 있다는 특징(호이스팅 적용)
+                function add(a,b){
+                    return a+b
+                }
+                * 호이스팅
+                호이스팅은 자바스크립트가 코드를 실행하기 전 변수와 함수 선언을 해당 스코프의 최상단으로 끌어올려 처리하는 동작방식이다. 이로 인해 함수 선언문은 코드의 위치와 상관없이 호출할 수 있으며, var로 선언된 변수 또한 선언 자체는 끝이 올려지지만 값응 초기화되지 않아 undefined 상태가 됨
+
+            2. 함수 표현식
+                - 함수를 변수에 할당하는 방식
+                - 함수가 변수에 저장되기 때문에 선언 이전엔 사용할 수 없음
+                const add = function(a, b) {
+                    return a + b
+                }
+
+            3. 화살표 함수
+                - 간결한 함수 표현 방식으로, 기존 함수보다 코드가 짧고 직관적
+                - this를 자체적으로 가지지 않고 상위 스코프인 this를 그대로 사용하기 때문에 콜백 함수나 간단한 연산 로직에 자주 사용됨
+                1) const add = (a, b) => {return a+b} (여러줄 가능)
+                2) const add = (a, b) => a+b (return 생략)
+
+            4. 익명 함수
+                - 이름이 없는 함수로, 주로 함수 표현식이나 콜백 함수 형태로 사용됨
+                - 한 번만 사용되거나 특정 상황에서 즉시 전달해야하는 로직에 적합
+                const print = function() {console.log("익명 함수 실행")}
+
+            5. 즉시 실행 함수
+                (function() {console.log("즉시 실행")})()
+
+            6. 콜백 함수
+                - 함수의 인자로 전달됨
+                function greet(callback) {callback()}
+                greet(function() {console.log("안녕하세요")})
+                → callback = function() {console.log("안녕하세요")} 이것과 같음
+                → greet(() => {console.log("안녕하세요")}) 이것과도 같음
+
+            7. 가변 매개변수를 가진 함수
+                - 함수의 전달되는 인자의 개수가 정해져 있지 않을 때
+                - 여러 개의 값을 하나로 묶어 받아 처리할 수 있도록 해주는 기능
+                function 함수명(...매개변수명){
+                    // 매개변수명은 배열을 나타냄
+                }
+
+            8. 중첩 함수
+                - 함수 안에 또 다른 함수를 정의하는 방식
+                - 내부 함수는 외부 함수의 영역 안에서만 사용할 수 있다는 특징
+                - 외부 함수의 변수에 접근할 수 있어 관련된 로직을 하나의 기능 단위로 묶을 수 있으며, 불필요한 전역 변수 사용을 줄이고 코드의 안정성과 가독성을 높일 수 있음
+                function 외부함수명(매개변수){
+                    외부함수코드
+                    function 내부함수명(매개변수){
+                        내부함수코드
+                    }
+                    내부함수명()
+                }
+
+            9. 고차 함수
+                - 함수를 인자로 전달받거나, 함수를 반환하는 함수를 말함
+                function 함수명(매개변수){
+                    return function(매개변수){
+                        return 반환값
+                    }
+                }
+
+        */
+    </script>
+</head>
+<body>
+
+    <script>
+        console.log("[호이스팅]")
+
+        const result = add1(3,5)
+        console.log(result) // 8
+
+        // 함수가 어디에 있던 모두 작동한다 = 호이스팅
+        function add1(a,b){
+            return a+b
+        }
+
+        const result1 = add1(3,5)
+        console.log(result1) // 8
+
+
+        // ---------------------------------------------------
+        console.log("[함수 표현식 - 호이스팅 사용불가]")
+        // 여기에서 콘솔하면 에러남
+
+        const add2 = function(a, b){
+            return a+b
+        }
+        const result2 = add2(3,5)
+        console.log(result2) //8
+
+        
+        // ---------------------------------------------------
+        console.log("[화살표 함수]")
+
+        const add3 = (a,b) => a+b
+        console.log(add3(3,5)) // 8 
+
+        
+        // ---------------------------------------------------
+        console.log("[즉시 실행되는 함수]");
+
+        // 즉시실행 함수를 쓸 땐 직전 함수가 마무리되도록 세미콜론 사용해야함!
+        // 직전함수에 세미콜론 없으면 에러남
+        (function() {console.log("즉시 실행됨")})()
+
+        
+        // ---------------------------------------------------
+        console.log("[콜백 함수]")
+
+        function greet(callback) {callback()}
+        greet(function() {console.log("안녕하세요")})
+        greet(() => {console.log("안녕하세요")}) // 화살표 함수로도 표현가능
+
+        greet(function(name = "guest") {console.log(`${name}님 안녕하세요`)})
+        greet((name = "guest") => {console.log(`${name}님 안녕하세요`)}) 
+
+        
+        // ---------------------------------------------------
+        console.log("[가변 매개변수]")
+
+        function sum(...numbers){
+            let total = 0
+            for (let num of numbers){ // of는 파이썬의 in과 같은기능
+                total += num   
+            } 
+            return total
+        }
+
+        console.log(sum(1,2,3)) // 6
+        console.log(sum(1,20,60,50)) // 131
+
+        
+        // ---------------------------------------------------
+        console.log("[중첩 함수]")
+
+        function greet(name){
+            function message(){
+                return `안녕하세요 ${name}님`
+            }
+            console.log(message())
+        }
+
+        greet("김사과") // 김사과가 name으로 들어감 → 콘솔실행 → 콘솔의 메세지를 호출 → 메세지 내부함수에서 리턴값 출력
+
+        
+        // ---------------------------------------------------
+        console.log("[고차 함수]")
+
+        function createMultiplier(multiplier){
+            return function(number){
+                return number * multiplier
+            }
+        }
+        // function(number){
+        //         return number * multiplier
+        // }
+        const result3 = createMultiplier(5) // 이 안에 들어가있는건 함수가 들어가있음.
+        // result3 = function(number) {return number * 5}
+        console.log(result3(5)) // 25
+
+
+    </script>
+    
+</body>
+</html>
